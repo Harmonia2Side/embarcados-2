@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# sai do programa em caso de erro
+set -e
+
 # Baixa arquivo correto para host Linux e alvo arm 32 bits
 # wget https://developer.arm.com/-/media/Files/downloads/gnu/12.3.rel1/binrel/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz?rev=dccb66bb394240a98b87f0f24e70e87d&hash=B788763BE143D9396B59AA91DBA056B6
 # baixa hash 256
@@ -10,11 +13,24 @@
 # 12a2815644318ebcceaf84beabb665d0924b6e79e21048452c5331a56332b309  arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz
 # 12a2815644318ebcceaf84beabb665d0924b6e79e21048452c5331a56332b309  arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz
 
+install_dir="$HOME/.local/bin/arm-toolchain"
+echo "--AZ: Instalando toolchain em $install_dir"
 
-# extrair
-tar -xvf arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz
+echo '--AZ: remove instalações antigas'
+rm -rf --preserve-root $install_dir
 
-# entrar no dir
-cd arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi/
+echo '--AZ: Cria diretório de instalação'
+mkdir $install_dir
 
-# executar setup
+echo '--AZ: Instalando dependências' 
+# sudo apt install python-is-python3 libncurses5 libncursesw5
+
+python --version
+
+echo "--AZ: Extraindo toolchain para $install_dir"
+tar -xvf arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz -C $install_dir
+
+echo "--AZ: Configurando PATH no .bashrc"
+cat << EOF | tee -a $HOME/.bashrc
+export PATH=$install_dir:\$PATH
+EOF
