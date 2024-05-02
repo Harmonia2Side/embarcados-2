@@ -28,9 +28,12 @@ echo '--AZ: Instalando dependências'
 python --version
 
 echo "--AZ: Extraindo toolchain para $install_dir"
-tar -xvf arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz -C $install_dir
+tar -xf arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi.tar.xz -C $install_dir
 
 echo "--AZ: Configurando PATH no .bashrc"
 cat << EOF | tee -a $HOME/.bashrc
-export PATH=$install_dir:\$PATH
+export PATH=$install_dir/arm-gnu-toolchain-12.3.rel1-x86_64-arm-none-eabi/bin:\$PATH
 EOF
+
+echo '--AZ: Installation complete!'
+echo '--AZ: To test, open a new shell and run arm-none-eabi-gcc -v'
